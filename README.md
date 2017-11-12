@@ -2,6 +2,8 @@
 
 generating php hal object from array data
 
+this package currently just supports  json and not xml
+
 
 #### Sample usage:
 
