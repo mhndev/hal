@@ -1,0 +1,27 @@
+{
+  "name": "mhndev/hal",
+  "license": "MIT",
+  "type": "library",
+  "Description": "hal object",
+  "keywords":["hal object","hal http response"],
+  "autoload": {
+    "psr-4": {
+      "mhndev\\hal\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1"
+  },
+
+  "require-dev": {
+    "phpunit/phpunit": "6.*"
+  },
+
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\": "tests/"
+    }
+  }
+
+
+}
