@@ -1,3 +1,12 @@
+[![Build Status](https://travis-ci.org/mhndev/hal.svg?branch=master)](https://travis-ci.org/mhndev/hal)
+[![Latest Stable Version](https://poser.pugx.org/mhndev/hal/v/stable)](https://packagist.org/packages/mhndev/hal)
+[![Total Downloads](https://poser.pugx.org/mhndev/hal/downloads)](https://packagist.org/packages/mhndev/hal)
+[![Latest Unstable Version](https://poser.pugx.org/mhndev/hal/v/unstable)](https://packagist.org/packages/mhndev/hal)
+[![License](https://poser.pugx.org/mhndev/hal/license)](https://packagist.org/packages/mhndev/hal)
+[![composer.lock](https://poser.pugx.org/mhndev/hal/composerlock)](https://packagist.org/packages/mhndev/hal)
+
+
+
 ### Php Hal Object 
 
 generating php hal object from array data
