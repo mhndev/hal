@@ -47,7 +47,7 @@ class Presenter
 
     function asXml()
     {
-        die('Not implemented yet !');
+        return 'Not implemented yet !';
     }
 
 
