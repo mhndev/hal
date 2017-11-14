@@ -33,9 +33,9 @@ class PresenterTest extends TestCase
 
 
         $this->assertArrayHasKey('comments', $userArray['_embedded']);
-        $this->assertArrayHasKey('self', $userArray['_links'][0]);
+        $this->assertArrayHasKey('self', $userArray['_links']);
 
-        $this->assertEquals($comments, $userArray['_embedded']['comments']);
+        $this->assertEquals($comments, $userArray['_embedded']['comments']['data']);
     }
 
 

@@ -73,7 +73,11 @@ $userResource->addEmbeddedResource($profileResource, 'profile');
 
 $tagsResource = new \mhndev\hal\Resource($tags);
 
-$commentsResource = new \mhndev\hal\Resource($comments);
+$request = \Slim\Http\Request::createFromGlobals([]);
+
+
+$commentsResource = new \mhndev\hal\Paginated($comments, 5 , 10, $request);
+
 
 
 $postResource->addEmbeddedResource($userResource, 'user');
@@ -88,6 +92,10 @@ header('Content-Type: application/json');
 
 $presenter = new \mhndev\hal\Presenter($postResource);
 
+var_dump((new \mhndev\hal\Presenter($postResource))->asArray());die();
+
+
 echo $presenter->asJson();
+
 
 ```
