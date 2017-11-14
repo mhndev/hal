@@ -2,6 +2,7 @@
 namespace mhndev\hal;
 
 use mhndev\hal\Contract\iLink;
+use mhndev\hal\Contract\iPaginated;
 use mhndev\hal\Contract\iResource;
 
 /**
@@ -57,7 +58,7 @@ class Presenter
      */
     protected function toArray(iResource $resource)
     {
-        $result = $resource->getProperties();
+        $result['data'] = $resource->getProperties();
 
         if($resource->hasLink()){
 
@@ -66,19 +67,25 @@ class Presenter
 
             /** @var iLink $link */
             foreach ($links as $link){
-                array_push($result['_links'], $this->linkToArray($link) );
+                $result['_links'][$link->getRelation()] = $this->linkToArray($link);
             }
         }
 
         if($resource->hasEmbedded()){
 
             $result['_embedded'] = [];
+
             $embeddeds = $resource->getEmbedded();
 
             /** @var iResource $embedded */
             foreach ($embeddeds as $key => $embedded){
                 $result['_embedded'][$key] = $this->toArray($embedded);
             }
+        }
+
+        if($resource instanceof iPaginated){
+            $result['count'] = $resource->getCount();
+            $result['total'] = $resource->getTotal();
         }
 
         return $result;
@@ -91,24 +98,15 @@ class Presenter
      */
     protected function linkToArray(iLink $link)
     {
-        $result = [];
-
-        $result[$link->getRelation()] = [
-            'href' => $link->getHref()
-        ];
+        $result = ['href' => $link->getHref()];
 
         if($link->isTemplated()){
-            $result[$link->getRelation()] = [
-                'templated' => $link->getTemplated()
-            ];
+            $result['templated'] = $link->getTemplated();
         }
 
         if($link->hasName()){
-            $result[$link->getName()] = [
-                'name' => $link->getName()
-            ];
+            $result['name'] = $link->getName();
         }
-
 
         return $result;
     }

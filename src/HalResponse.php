@@ -30,9 +30,15 @@ class HalResponse
     {
         if($request->hasHeader('ACCEPT')){
             $accept = $request->getHeader('ACCEPT')[0];
+
+            if($accept == '*/*'){
+                $accept = 'application/json';
+            }
+
         }else{
             $accept = 'application/json';
         }
+
 
         if($accept == 'application/json'){
             $response = $response->withHeader('Content-type', 'application/json');
