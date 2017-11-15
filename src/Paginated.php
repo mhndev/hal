@@ -12,10 +12,23 @@ use Psr\Http\Message\RequestInterface;
 class Paginated extends Resource implements iPaginated
 {
 
+
+    const perPage = 10;
+
+    const page = 1;
+
+
     /**
      * @var integer
      */
     protected $count;
+
+
+    /**
+     * @var int
+     */
+    protected $page_count;
+
 
     /**
      * @var integer
@@ -78,11 +91,6 @@ class Paginated extends Resource implements iPaginated
     protected $request;
 
     /**
-     * @var int
-     */
-    protected $page_count;
-
-    /**
      * @var string
      */
     protected $page_name;
@@ -101,8 +109,8 @@ class Paginated extends Resource implements iPaginated
      * Paginated constructor.
      *
      * @param iterable $properties
-     * @param int $count
      * @param int $total
+     * @param string $name
      * @param RequestInterface $request
      * @param string $page_name
      * @param string $count_name
@@ -110,9 +118,9 @@ class Paginated extends Resource implements iPaginated
      */
     function __construct(
         $properties,
-        int $count,
         int $total,
         RequestInterface $request,
+        string $name = null,
         $page_name = 'page',
         $count_name = 'count',
         $total_name = 'total'
@@ -120,12 +128,33 @@ class Paginated extends Resource implements iPaginated
     {
         parent::__construct($properties);
 
-        $this->count = $count;
+
         $this->total = $total;
         $this->request = $request;
-        $this->page_name = $page_name;
         $this->countName = $count_name;
         $this->totalName = $total_name;
+
+        $query = $this->request->getUri()->getQuery();
+        parse_str($query, $parsed_query);
+
+        if($name){
+            if(array_key_exists('perPage_'.$name, $parsed_query) &&
+                !empty($parsed_query['perPage_'.$name])
+            ){
+                $this->count = min($this->total, $parsed_query['perPage_'.$name]);
+            }
+            else{
+                $this->count = min(self::perPage, $this->total);
+            }
+            $this->page_name = 'page_'.$name;
+        }//
+        else{
+            $count = empty($parsed_query['perPage']) ? self::perPage : $parsed_query['perPage'];
+
+            $this->count = min($count, $this->total);
+
+            $this->page_name = 'page';
+        }
 
         $this->addLinks();
     }
@@ -452,12 +481,15 @@ class Paginated extends Resource implements iPaginated
 
     /**
      * @return $this
+     * @throws \Exception
      */
     private function setPageCount()
     {
-        $number = $this->getTotal() / $this->getCount();
+        $number = (int) ( $this->getTotal() / $this->getCount() );
 
-        if($this->getTotal() % $this->getCurrentPage() == 0 ){
+        $remainder = fmod( $this->getTotal(), $this->getCount() );
+
+        if( $remainder == 0 ){
             $this->page_count = $number;
         }
         else{
@@ -465,6 +497,22 @@ class Paginated extends Resource implements iPaginated
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalName(): string
+    {
+        return $this->totalName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountName(): string
+    {
+        return $this->countName;
     }
 
 }
