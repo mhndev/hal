@@ -7,8 +7,6 @@ namespace mhndev\hal\Contract;
  */
 interface iResource
 {
-
-
     /**
      * get plain data
      *

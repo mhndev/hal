@@ -323,7 +323,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getFirstPage()
+    function getFirstPage()
     {
         if($this->first_page){
             return $this->first_page;
@@ -336,7 +336,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    private function setFirstPage()
+    function setFirstPage()
     {
         $first_page = -1;
 
@@ -353,7 +353,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getPrevPage()
+    function getPrevPage()
     {
         if($this->prev_page){
             return $this->prev_page;
@@ -382,7 +382,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getCurrentPage()
+    function getCurrentPage()
     {
         if($this->current_page){
             return $this->current_page;
@@ -395,7 +395,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    private function setCurrentPage()
+    function setCurrentPage()
     {
         $query = $this->request->getUri()->getQuery();
         parse_str($query, $parsed_query);
@@ -415,7 +415,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getNextPage()
+    function getNextPage()
     {
         if($this->next_page){
             return $this->next_page;
@@ -445,7 +445,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getLastPage()
+    function getLastPage()
     {
         if($this->last_page){
             return $this->last_page;
@@ -458,7 +458,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    private function setLastPage()
+    function setLastPage()
     {
         $this->last_page = $this->getPageCount();
 
@@ -469,7 +469,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    private function getPageCount()
+    function getPageCount()
     {
         if($this->page_count){
             return $this->page_count;
@@ -515,4 +515,34 @@ class Paginated extends Resource implements iPaginated
         return $this->countName;
     }
 
+    /**
+     * @return int
+     */
+    function getPerPage()
+    {
+        return $this->getCount();
+    }
+
+    /**
+     * @return int
+     */
+    function getPerPageName()
+    {
+        return $this->getCountName();
+    }
+
+    /**
+     * current page link
+     * example :
+     *  /items?page=3
+     *
+     * This should be identical to @see self::getSelfLink
+     * the only reason for its existence is syntactical sugar
+     *
+     * @return iLink
+     */
+    function getCurrentLink()
+    {
+        return $this->getSelfLink();
+    }
 }
