@@ -189,7 +189,7 @@ class Paginated extends Resource implements iPaginated
 
         $query_string = http_build_query($parsed_query);
 
-        return new Link('first', $path.$query_string);
+        return new Link('first', $path.'?'.$query_string);
     }
 
 
@@ -205,7 +205,7 @@ class Paginated extends Resource implements iPaginated
         $parsed_query[$this->getPageName()] = $this->getPrevPage();
 
         $query_string = http_build_query($parsed_query);
-        return new Link('prev', $path.$query_string);
+        return new Link('prev', $path.'?'.$query_string);
     }
 
     /**
@@ -220,7 +220,7 @@ class Paginated extends Resource implements iPaginated
         $parsed_query[$this->getPageName()] = $this->getCurrentPage();
 
         $query_string = http_build_query($parsed_query);
-        return new Link('self', $path.$query_string);
+        return new Link('self', $path.'?'.$query_string);
     }
 
     /**
@@ -234,8 +234,10 @@ class Paginated extends Resource implements iPaginated
 
         $parsed_query[$this->getPageName()] = $this->getNextPage();
 
+
         $query_string = http_build_query($parsed_query);
-        return new Link('next', $path.$query_string);
+
+        return new Link('next', $path.'?'.$query_string);
     }
 
 
@@ -251,7 +253,7 @@ class Paginated extends Resource implements iPaginated
         $parsed_query[$this->getPageName()] = $this->getLastPage();
 
         $query_string = http_build_query($parsed_query);
-        return new Link('last', $path.$query_string);
+        return new Link('last', $path.'?'.$query_string);
     }
 
     /**
@@ -323,7 +325,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getFirstPage()
+    private function getFirstPage()
     {
         if($this->first_page){
             return $this->first_page;
@@ -336,7 +338,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    function setFirstPage()
+    private function setFirstPage()
     {
         $first_page = -1;
 
@@ -353,7 +355,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getPrevPage()
+    private function getPrevPage()
     {
         if($this->prev_page){
             return $this->prev_page;
@@ -382,7 +384,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getCurrentPage()
+    private function getCurrentPage()
     {
         if($this->current_page){
             return $this->current_page;
@@ -395,7 +397,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    function setCurrentPage()
+    private function setCurrentPage()
     {
         $query = $this->request->getUri()->getQuery();
         parse_str($query, $parsed_query);
@@ -415,7 +417,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getNextPage()
+    private function getNextPage()
     {
         if($this->next_page){
             return $this->next_page;
@@ -445,7 +447,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getLastPage()
+    private function getLastPage()
     {
         if($this->last_page){
             return $this->last_page;
@@ -458,7 +460,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return $this
      */
-    function setLastPage()
+    private function setLastPage()
     {
         $this->last_page = $this->getPageCount();
 
@@ -469,7 +471,7 @@ class Paginated extends Resource implements iPaginated
     /**
      * @return int
      */
-    function getPageCount()
+    private function getPageCount()
     {
         if($this->page_count){
             return $this->page_count;
@@ -515,34 +517,4 @@ class Paginated extends Resource implements iPaginated
         return $this->countName;
     }
 
-    /**
-     * @return int
-     */
-    function getPerPage()
-    {
-        return $this->getCount();
-    }
-
-    /**
-     * @return int
-     */
-    function getPerPageName()
-    {
-        return $this->getCountName();
-    }
-
-    /**
-     * current page link
-     * example :
-     *  /items?page=3
-     *
-     * This should be identical to @see self::getSelfLink
-     * the only reason for its existence is syntactical sugar
-     *
-     * @return iLink
-     */
-    function getCurrentLink()
-    {
-        return $this->getSelfLink();
-    }
 }

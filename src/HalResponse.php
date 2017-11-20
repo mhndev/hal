@@ -99,7 +99,6 @@ class HalResponse
             $resource->addEmbeddedResource($embedded, $type);
         }
 
-
         return self::make($request, $response, $resource);
     }
 
